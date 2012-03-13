@@ -50,5 +50,6 @@ foreach $file (@files) {
 		
 		print $target . ': ' . "\n";
 		print "\t" . '@$(CC) ' . $file . ' -o ' . $target . '.test -L../lib -lhashmap -I../lib $(CFLAGS)' . "\n";
+		print "\t" . '@$(ECHO) echo "Running ' . $target . '.test..." >> $(RUNTEST)' . "\n\n";
 		print "\t" . '@$(ECHO) ./' . $target . '.test >> $(RUNTEST)' . "\n\n";
 }
