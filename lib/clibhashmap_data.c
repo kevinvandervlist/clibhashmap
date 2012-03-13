@@ -40,7 +40,7 @@ HASHDATA *clhm_init_private_data(int hashsize) {
 	return hd;
 }
 
-BUCKET *clhm_get_bucket(char *key, void *ptr) {
+BUCKET *clhm_get_new_bucket(char *key, void *ptr) {
 	BUCKET *b = malloc(sizeof(struct _bucket));
 
 	b->next = NULL;

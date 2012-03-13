@@ -30,14 +30,15 @@
 #include "include/clibhashmap_hash.h"
 
 /**
- * Return an item from the hashmap.
+ * Return the bucket that's part of given key.
+ * If no bucket is found, return NULL
  * @param CLHM *map The hashmap to use.
  * @param char *key The key to do the lookup with.
+ * @param int remove If a node needs to be removed.
  */
 
-void *clhm_get_key(CLHM *map, char *key) {
+BUCKET *clhm_get_bucket_from_key(CLHM *map, char *key, int remove) {
 	HASHDATA *hd = (HASHDATA *)map->priv;
-
 	int hash = clibhashmap_hash(key, hd->size);
 	
 	// Not found - return
@@ -48,21 +49,36 @@ void *clhm_get_key(CLHM *map, char *key) {
 		if(b->next == NULL) {
 			// Only one element in list - return it if key is equal.
 			if (strcmp(b->key, key) == 0) {
-				return b->content;
+				if(remove) {
+					clhm_free_bucket(b);
+					hd->bucket_list[hash] = NULL;
+				}
+				return b;
 			} else {
 				return NULL;
 			}
-
 		} else {
-
 			// More elements, loop until found.
+			BUCKET *prev = NULL;
 			while(b != NULL && (strcmp(b->key, key) != 0)) {
+				prev = b;
 				b = b->next;
 			}
 			if(b == NULL) {
 				return NULL;
 			} else if(strcmp(b->key, key) == 0) {
-				return b->content;
+				if(remove) {
+					BUCKET *tmp = b;
+					// First element?
+					if(strcmp(hd->bucket_list[hash]->key, key) == 0) {
+						hd->bucket_list[hash] = b->next;
+						clhm_free_bucket(tmp);
+					} else {
+						prev->next = b->next;
+						clhm_free_bucket(tmp);
+					}
+				}
+				return b;
 			}
 		}
 	}
@@ -70,6 +86,30 @@ void *clhm_get_key(CLHM *map, char *key) {
 	return NULL;
 }
 
-void *clhm_remove_key(CLHM *map, char *key) {
+/**
+ * Return an item from the hashmap.
+ * @param CLHM *map The hashmap to use.
+ * @param char *key The key to do the lookup with.
+ */
 
+void *clhm_get_key(CLHM *map, char *key) {
+	BUCKET *b = clhm_get_bucket_from_key(map, key, 0);
+	if(b != NULL) {
+		return b->content;
+	}
+	return NULL;
+}
+
+/**
+ * Return an item from the hashmap, and delete it when found.
+ * @param CLHM *map The hashmap to use.
+ * @param char *key The key to do the lookup with.
+ */
+
+void *clhm_remove_key(CLHM *map, char *key) {
+	BUCKET *b = clhm_get_bucket_from_key(map, key, 1);
+	if(b != NULL) {
+		return b->content;
+	}
+	return NULL;
 }

@@ -41,7 +41,7 @@ void clhm_put(CLHM *map, char *key, void *ptr) {
 	
 	// Empty bucket - create one.
 	if(hd->bucket_list[hash] == NULL) {
-		hd->bucket_list[hash] = clhm_get_bucket(key, ptr);
+		hd->bucket_list[hash] = clhm_get_new_bucket(key, ptr);
 	} else {
 		// Use a chain.
 		BUCKET *b = hd->bucket_list[hash];
@@ -53,7 +53,7 @@ void clhm_put(CLHM *map, char *key, void *ptr) {
 		} while(b != NULL);
 
 		// Appand it at the right place.
-		cur->next = clhm_get_bucket(key, ptr);
+		cur->next = clhm_get_new_bucket(key, ptr);
 	}
 	return;
 }

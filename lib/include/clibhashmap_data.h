@@ -28,7 +28,7 @@ typedef struct _hashdata {
 	BUCKET *bucket_list[];
 } HASHDATA;
 
-BUCKET *clhm_get_bucket(char *key, void *ptr);
+BUCKET *clhm_get_new_bucket(char *key, void *ptr);
 HASHDATA *clhm_init_private_data(int hashsize);
 void clhm_free_bucket(BUCKET *b);
 #endif
