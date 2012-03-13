@@ -34,10 +34,12 @@
  */
 
 void clhm_put(CLHM *map, char *key, void *ptr) {
-
 	HASHDATA *hd = (HASHDATA *)map->priv;
 
 	int hash = clibhashmap_hash(key, hd->size);
+
+	// Increment the number of entries.
+	hd->entries++;
 	
 	// Empty bucket - create one.
 	if(hd->bucket_list[hash] == NULL) {
@@ -54,6 +56,7 @@ void clhm_put(CLHM *map, char *key, void *ptr) {
 
 		// Appand it at the right place.
 		cur->next = clhm_get_new_bucket(key, ptr);
+
 	}
 	return;
 }

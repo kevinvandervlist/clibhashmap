@@ -34,6 +34,8 @@ CLHM *clhm_init(int size) {
 	ret->put = clhm_put;
 	ret->get_key = clhm_get_key;
 	ret->remove_key = clhm_remove_key;
+	ret->get_hashmap_size = clhm_get_hashmap_size;
+	ret->get_no_entries = clhm_get_no_entries;
 
 	HASHDATA *hd = clhm_init_private_data(size);
 	ret->priv = hd;
@@ -63,3 +65,4 @@ void clhm_destroy(CLHM *map) {
 	//finally, free the map
 	free(map);
 }
+

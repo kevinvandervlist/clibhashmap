@@ -32,12 +32,35 @@ HASHDATA *clhm_init_private_data(int hashsize) {
 	int i;
 	
 	hd->size = hashsize;
+	hd->entries = 0;
 
 	for (i = 0; i < hashsize; i++) {
 		hd->bucket_list[i] = NULL;
 	}
 
 	return hd;
+}
+
+/**
+ * Return the size of the hashmap
+ * @param CLHM *map The hashmap.
+ * @param int *size The size can be stored here.
+ */
+
+void clhm_get_hashmap_size(CLHM *map, int *size) {
+	HASHDATA *hd = (HASHDATA *)map->priv;
+	*size = hd->size;
+}
+
+/**
+ * Return the no entries in the hashmap.
+ * @param CLHM *map The hashmap.
+ * @param int *size The entries can be stored here.
+ */
+		
+void clhm_get_no_entries(CLHM *map, int *entries) {
+	HASHDATA *hd = (HASHDATA *)map->priv;
+	*entries = hd->entries;
 }
 
 BUCKET *clhm_get_new_bucket(char *key, void *ptr) {

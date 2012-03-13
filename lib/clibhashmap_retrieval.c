@@ -109,6 +109,9 @@ void *clhm_get_key(CLHM *map, char *key) {
 void *clhm_remove_key(CLHM *map, char *key) {
 	BUCKET *b = clhm_get_bucket_from_key(map, key, 1);
 	if(b != NULL) {
+		// Decrease the number of entries.
+		HASHDATA *hd = (HASHDATA *)map->priv;
+		hd->entries--;
 		return b->content;
 	}
 	return NULL;

@@ -37,6 +37,12 @@ typedef struct _hashmap {
 	/* Remove an entry from the hashmap by it's key, and return it. */
 	void* (*remove_key)(CLHM *map, char* key);
 
+	/* Return the size of this hashmap. */
+	void (*get_hashmap_size)(CLHM *map, int *size);
+
+	/* Return the number of entries in this hashmap. */
+	void (*get_no_entries)(CLHM *map, int *entries);
+
 	/* Private data of the hashmap. Do not touch. */
 	void* priv;
 
