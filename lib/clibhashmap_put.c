@@ -38,6 +38,12 @@ void clhm_put(CLHM *map, char *key, void *ptr) {
 
 	int hash = clibhashmap_hash(key, hd->size);
 
+	// is the key allready in here? If so, do not insert (no dups).
+	void *existing_ptr = map->get_key(map, key);
+	if(existing_ptr != NULL) {
+		return;
+	}
+
 	// Increment the number of entries.
 	hd->entries++;
 	
