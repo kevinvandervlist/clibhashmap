@@ -1,0 +1,9 @@
+# Ignore tests:
+tests/*.test
+
+# Ignore example
+example/example
+
+# Ignore library objects and so's:
+lib/*.o
+lib/libhashmap.so*
