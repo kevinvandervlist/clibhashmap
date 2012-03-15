@@ -21,7 +21,7 @@
 #ifndef CLIBHASHMAP_ITERATOR_H
 #define CLIBHASHMAP_ITERATOR_H
 
-#include "../clibhashmap.h"
+#include <clibhashmap.h>
 #include "clibhashmap_bucket.h"
 
 CLHM_ITR* clhm_get_iterator(CLHM *map);

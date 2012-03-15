@@ -21,7 +21,7 @@
 #ifndef CLIBHASHMAP_PUT_H
 #define CLIBHASHMAP_PUT_H
 
-#include "../clibhashmap.h"
+#include <clibhashmap.h>
 
 void clhm_put(CLHM *map, char *key, void *ptr);
 

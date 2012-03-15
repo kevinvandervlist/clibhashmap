@@ -21,7 +21,7 @@
 #ifndef CLIBHASHMAP_RETRIEVAL_H
 #define CLIBHASHMAP_RETRIEVAL_H
 
-#include "../clibhashmap.h"
+#include <clibhashmap.h>
 
 void *clhm_get_key(CLHM *map, char *key);
 void *clhm_remove_key(CLHM *map, char *key);

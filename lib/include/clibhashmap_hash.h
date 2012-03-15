@@ -21,7 +21,7 @@
 #ifndef CLIBHASHMAP_HASH_H
 #define CLIBHASHMAP_HASH_H
 
-#include "../clibhashmap.h"
+#include <clibhashmap.h>
 
 int clibhashmap_hash(char *key, int len);
 

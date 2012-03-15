@@ -18,7 +18,7 @@
  * Kevin van der Vlist - kevin@kevinvandervlist.nl
  */
 
-#include "clibhashmap.h"
+#include <clibhashmap.h>
 
 #include <stdlib.h>
 

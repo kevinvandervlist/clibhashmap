@@ -63,4 +63,5 @@ int main() {
 	}
 
 	clhm_destroy(hashmap);
+	return 0;
 }

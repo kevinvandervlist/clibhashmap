@@ -21,7 +21,7 @@
 #ifndef CLIBHASHMAP_DATA_H
 #define CLIBHASHMAP_DATA_H
 
-#include "../clibhashmap.h"
+#include <clibhashmap.h>
 #include "clibhashmap_bucket.h"
 
 typedef struct _hashdata {
