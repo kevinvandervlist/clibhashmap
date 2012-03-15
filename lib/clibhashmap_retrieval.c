@@ -50,7 +50,6 @@ BUCKET *clhm_get_bucket_from_key(CLHM *map, char *key, int remove) {
 			// Only one element in list - return it if key is equal.
 			if (strcmp(b->key, key) == 0) {
 				if(remove) {
-					clhm_free_bucket(b);
 					hd->bucket_list[hash] = NULL;
 				}
 				return b;
@@ -68,14 +67,12 @@ BUCKET *clhm_get_bucket_from_key(CLHM *map, char *key, int remove) {
 				return NULL;
 			} else if(strcmp(b->key, key) == 0) {
 				if(remove) {
-					BUCKET *tmp = b;
 					// First element?
 					if(strcmp(hd->bucket_list[hash]->key, key) == 0) {
 						hd->bucket_list[hash] = b->next;
 					} else {
 						prev->next = b->next;
 					}
-					clhm_free_bucket(tmp);
 				}
 				return b;
 			}
@@ -108,10 +105,13 @@ void *clhm_get_key(CLHM *map, char *key) {
 void *clhm_remove_key(CLHM *map, char *key) {
 	BUCKET *b = clhm_get_bucket_from_key(map, key, 1);
 	if(b != NULL) {
+		void *ret = b->content;
 		// Decrease the number of entries.
 		HASHDATA *hd = (HASHDATA *)map->priv;
 		hd->entries--;
-		return b->content;
+		clhm_free_bucket(b);
+		return ret;
 	}
+
 	return NULL;
 }
