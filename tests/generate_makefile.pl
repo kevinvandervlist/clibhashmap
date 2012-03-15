@@ -26,6 +26,8 @@ print 'all: build' . "\n";
 print '' . "\n";
 print 'clean: ' . "\n";
 print '	@$(RM) *.test' . "\n";
+print 'run: ' . "\n";
+print '	@$(shell) ./run.test' . "\n";
 print '' . "\n";
 print 'prepare_ld_library_path:' . "\n";
 print "\t" . '@$(ECHO) export LD_LIBRARY_PATH=../lib/ > $(RUNTEST)' . "\n";

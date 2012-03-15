@@ -16,8 +16,7 @@
  #
  # Kevin van der Vlist - kevin@kevinvandervlist.nl
 
-#CFLAGS = -Wall -Werror -Wextra 
-CFLAGS =
+CFLAGS = -Wall -Werror -Wextra 
 
 SOURCES=$(wildcard *.c)
 OBJECTS=$(SOURCES:.c=.o)
