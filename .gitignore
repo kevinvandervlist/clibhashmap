@@ -3,7 +3,7 @@ tests/*.test
 tests/Makefile
 
 # Ignore example
-example/example
+demo/example
 
 # Ignore library objects and so's:
 lib/*.o
