@@ -72,11 +72,10 @@ BUCKET *clhm_get_bucket_from_key(CLHM *map, char *key, int remove) {
 					// First element?
 					if(strcmp(hd->bucket_list[hash]->key, key) == 0) {
 						hd->bucket_list[hash] = b->next;
-						clhm_free_bucket(tmp);
 					} else {
 						prev->next = b->next;
-						clhm_free_bucket(tmp);
 					}
+					clhm_free_bucket(tmp);
 				}
 				return b;
 			}
