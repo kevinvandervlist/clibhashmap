@@ -1,13 +1,5 @@
-# Ignore tests:
-tests/*.test
-tests/Makefile
-
-# Ignore example
-demo/example
-
-# Ignore library objects and so's:
-lib/*.o
-lib/libhashmap.so*
+# Ignore Makefiles
+*Makefile
 
 # Ignore CMake stuff:
 CMakeCache.txt
