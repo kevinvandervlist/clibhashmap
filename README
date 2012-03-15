@@ -1,3 +1,6 @@
 A C-hashmap implementation.
 
+See the following link for documentation and the API:
+https://github.com/kevinvandervlist/clibhashmap/blob/master/include/clibhashmap.h
+
 Being built because I want to experiment a bit.

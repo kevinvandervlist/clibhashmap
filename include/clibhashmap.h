@@ -192,8 +192,27 @@ typedef struct _clhm_hashmap {
  */
 
 typedef struct _clhm_iterator {
+
+	/**
+	 * Get the next CLHM_ITR element in line.
+	 * If this is the last one, NULL will be returned.
+	 * @param GLHM_ITR *itr A pointer to the current iterator.
+	 * @return GLHM_ITR *itr A pointer to the next iterator.
+	 */
+
 	CLHM_ITR* (*next)(CLHM_ITR *itr);
+
+	/**
+	 * The key of the current item in the hashmap.
+	 */
+
 	char *key;
+
+	/**
+	 * The value of the current item. 
+	 * Callee is responsible for correct casting again.
+	 */
+
 	void *value;
 
 	/**
