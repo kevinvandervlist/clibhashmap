@@ -25,6 +25,7 @@
 #include "include/clibhashmap_bucket.h"
 #include "include/clibhashmap_data.h"
 #include "include/clibhashmap_hash.h"
+#include "include/clibhashmap_iterator.h"
 #include "include/clibhashmap_put.h"
 #include "include/clibhashmap_retrieval.h"
 
@@ -37,6 +38,7 @@ CLHM *clhm_init(unsigned int size) {
 	ret->remove_key = clhm_remove_key;
 	ret->get_hashmap_size = clhm_get_hashmap_size;
 	ret->get_no_entries = clhm_get_no_entries;
+	ret->get_iterator = clhm_get_iterator;
 
 	HASHDATA *hd = clhm_init_private_data(size);
 	ret->priv = hd;

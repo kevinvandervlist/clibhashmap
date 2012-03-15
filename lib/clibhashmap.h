@@ -41,6 +41,25 @@
  * Also, putting a lot of pointers in the hashmap, and then finish 
  * using the hashmap with a call to clhm_destroy() will NOT free any 
  * data put into the hashmap by the callee. It will just be lost.
+ *
+ * Last but not least - this hashmap is currently NOT thread safe.
+ *
+ * To finish up, here is a small example of the hashmap:
+ *
+ * CLHM *hashmap = NULL;
+ * hashmap = clhm_init(15);
+ *
+ * char *one = "one";
+ * int one_int = 1;
+ * char *two = "two";
+ * int two_int = 2;
+ *
+ * hashmap->put(hashmap, one, (void *)&one_int);
+ * hashmap->put(hashmap, two, (void *)&two_int);
+ * 
+ * void *iptr = hashmap->get_key(hashmap, one);
+ * printf("One: %d\n", *(int *)iptr);
+ *
  */
 
 /**
@@ -50,7 +69,17 @@
  * users can't interact with this information.
  */
 
-typedef struct _hashmap CLHM;
+typedef struct _clhm_hashmap CLHM;
+
+/**
+ * The CLHM_ITR struct is used to iterate over the elements of a hashmap.
+ * Essentially, this iterator will consist of a collection of pointers available
+ * in the hashmap at the precise moment the iterator was created.
+ * In other words, it is a kind of snapshot. Changes in the hashmap will NOT
+ * be reflected inside the iterator.
+ */
+
+typedef struct _clhm_iterator CLHM_ITR;
 
 /**
  * Initialize a new hashmap.
@@ -80,7 +109,7 @@ void clhm_destroy(CLHM *map);
  * is done via the following function pointers.
  */
 
-typedef struct _hashmap {
+typedef struct _clhm_hashmap {
 	/**
 	 * To 'put', or insert a new item (key,value) in the hashmap, this function
 	 * needs to be called. 
@@ -129,11 +158,49 @@ typedef struct _hashmap {
 	void (*get_no_entries)(CLHM *map, unsigned int *entries);
 
 	/**
+	 * Return an iterator to walk over all items that are currently in the hashmap.
+	 * This iterator is like a snapshot of hashmap.
+	 * @param CLHM *map The hashmap itself.
+	 * @return CLHM_ITR * A pointer to the iterator, set at the first item.
+	 */
+
+	CLHM_ITR* (*get_iterator)(CLHM *map);
+
+	/**
 	 * Private data of the hashmap. This should not be touched.
 	 */
 
-	void* priv;
+	void *priv;
 
 } CLHM;
+
+/**
+ * The iterator to use on the hashmap.
+ * Use it to simply iterate over the complete
+ * hashmap. The order of items is an arbitrary sequence.
+ *
+ * A little demo: 
+ *	CLHM_ITR *itr = hashmap->get_iterator(hashmap);
+ *
+ * while(itr != NULL) {
+ *   printf("(key,value)::(%s,%d)\n", itr->key, *(int *)itr->value);
+ *   itr = itr->next(itr);
+ * }
+ * 
+ * In other words, use the itr->next() call to move to the next item.
+ * Cleanup is handled by the library.
+ */
+
+typedef struct _clhm_iterator {
+	CLHM_ITR* (*next)(CLHM_ITR *itr);
+	char *key;
+	void *value;
+
+	/**
+	 * Private data of the iterator. This should not be touched.
+	 */
+
+	void *priv;
+} CLHM_ITR;
 
 #endif
