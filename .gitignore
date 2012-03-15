@@ -8,3 +8,11 @@ demo/example
 # Ignore library objects and so's:
 lib/*.o
 lib/libhashmap.so*
+
+# Ignore CMake stuff:
+CMakeCache.txt
+CMakeFiles/*
+cmake_install.cmake
+
+# And ignore the build directory
+build/*
