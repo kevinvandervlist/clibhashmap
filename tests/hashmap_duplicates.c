@@ -30,7 +30,7 @@ int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
 	hashmap = clhm_init(15);
-	int entries = -1;
+	unsigned int entries = 0;
 
 	// Make up some data.
 	char *one = "one";

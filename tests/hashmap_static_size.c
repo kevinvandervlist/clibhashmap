@@ -32,7 +32,7 @@ int main() {
 	CLHM *hashmap = NULL;
 	hashmap = clhm_init(SIZE);
 
-	int size = 0;
+	unsigned int size = 0;
 	hashmap->get_hashmap_size(hashmap, &size);
 	assert(size == SIZE);
 

@@ -28,9 +28,10 @@
 #include "include/clibhashmap_put.h"
 #include "include/clibhashmap_retrieval.h"
 
-CLHM *clhm_init(int size) {
+CLHM *clhm_init(unsigned int size) {
 	CLHM *ret = malloc(sizeof(CLHM));
-	
+
+	// Attach all the function pointers in the object-like struct.
 	ret->put = clhm_put;
 	ret->get_key = clhm_get_key;
 	ret->remove_key = clhm_remove_key;
@@ -45,7 +46,7 @@ CLHM *clhm_init(int size) {
 
 void clhm_destroy(CLHM *map) {
 	HASHDATA *hd = (HASHDATA *)map->priv;
-	int i;
+	unsigned int i;
 
 	// Iterate over all elements in the hashmap, and delet them.
 	for(i = 0; i < hd->size; i++) {

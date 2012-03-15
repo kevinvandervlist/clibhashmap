@@ -47,7 +47,7 @@ HASHDATA *clhm_init_private_data(int hashsize) {
  * @param int *size The size can be stored here.
  */
 
-void clhm_get_hashmap_size(CLHM *map, int *size) {
+void clhm_get_hashmap_size(CLHM *map, unsigned int *size) {
 	HASHDATA *hd = (HASHDATA *)map->priv;
 	*size = hd->size;
 }
@@ -58,7 +58,7 @@ void clhm_get_hashmap_size(CLHM *map, int *size) {
  * @param int *size The entries can be stored here.
  */
 		
-void clhm_get_no_entries(CLHM *map, int *entries) {
+void clhm_get_no_entries(CLHM *map, unsigned int *entries) {
 	HASHDATA *hd = (HASHDATA *)map->priv;
 	*entries = hd->entries;
 }

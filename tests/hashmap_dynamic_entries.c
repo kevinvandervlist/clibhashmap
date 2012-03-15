@@ -28,7 +28,7 @@
 int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
-	int entries = -1;
+	unsigned int entries = 0;
 
 	hashmap = clhm_init(15);
 

@@ -22,36 +22,118 @@
 #define CLIBHASHMAP_H
 
 /**
- * The hashmap itself.
+ * This header defines the whole public API of clibhashmap. 
+ * All than can be done from outside the library is listed 
+ * in the following definitions. 
+ *
+ * The hasmap can be used to store items, using a (key,value) 
+ * pair. The key should be a standard C-string and will be hashed.
+ * The value can be an arbitrary pointer. The caller of the library 
+ * (henceforth callee) should take note of the original datatype,
+ * so it can be casted back.
+ *
+ * The callee is also responsible for free() and malloc()'ing of the 
+ * memory regions the pointers in the hashmap point to.
+ * In other words, when the callee puts a pointer in the hashmap, 
+ * then free()'s it's memory region, and requests the pointer again,
+ * the pointer will be roque.
+ * 
+ * Also, putting a lot of pointers in the hashmap, and then finish 
+ * using the hashmap with a call to clhm_destroy() will NOT free any 
+ * data put into the hashmap by the callee. It will just be lost.
+ */
+
+/**
+ * First of all, the CLHM typedef'd struct is the hashmap itself.
+ * It is made up from a few function pointers, defining the api, 
+ * and a void *priv pointer to internal data. Needless to say, 
+ * users can't interact with this information.
  */
 
 typedef struct _hashmap CLHM;
 
+/**
+ * Initialize a new hashmap.
+ * 
+ * This method should always be the first call when a callee
+ * wants to use the hashmap. It should be given a parameter, 
+ * @param unsigned int n The number of buckets to use in the hashmap.
+ * @return CLHM * Pointer to a new hashmap.
+ */
+
+CLHM *clhm_init(unsigned int n);
+
+/**
+ * Destroy a given hashmap.
+ * 
+ * Destroying make sure that all internal data will bee free()'d.
+ * After this call, the parametrized pointer can be discarded, all memory is 
+ * given back to the OS.
+ * @param CLHM * map Pointer to the existing new hashmap, so it will be freed.
+ */
+
+void clhm_destroy(CLHM *map);
+
+/**
+ * The Hashmap struct itself is used almost as some sort of object.
+ * Next to the init and destroy functions, interaction with the hashmap 
+ * is done via the following function pointers.
+ */
+
 typedef struct _hashmap {
-	/* Put a pointer in the map with the given key */
+	/**
+	 * To 'put', or insert a new item (key,value) in the hashmap, this function
+	 * needs to be called. 
+	 * The key value will be used to create a hash from.
+	 * @param CLHM *map The hashmap itself.
+	 * @param char *key The key of the item to store.
+	 * @param void *ptr A pointer to an object to store.
+	 */
+
 	void (*put)(CLHM *map, char *key, void *ptr);
 
-	/* Get an entry from the hashmap by it's key */
+	/**
+	 * Retrieve an item from the hashmap, locating it via it's key.
+	 * @param CLHM *map The hashmap itself.
+	 * @param char *key The key of the item to find.
+	 * @return void * A pointer to the stored value. Callee is responsible
+	 * for issuing a correct cast.
+	 */
+
 	void* (*get_key)(CLHM *map, char* key);
 
-	/* Remove an entry from the hashmap by it's key, and return it. */
+	/**
+	 * The same as get_key(), but also deletes the entry from the hashmap.
+	 * @param CLHM *map The hashmap itself.
+	 * @param char *key The key of the item to find.
+	 * @return void * A pointer to the stored value. Callee is responsible
+	 * for issuing a correct cast.
+	 */
+
 	void* (*remove_key)(CLHM *map, char* key);
 
-	/* Return the size of this hashmap. */
-	void (*get_hashmap_size)(CLHM *map, int *size);
+	/**
+	 * Return the size (in buckets) of the given hashmap.
+	 * @param CLHM *map The hashmap itself.
+	 * @param unsigned int *size A pointer to store the size in.
+	 */
 
-	/* Return the number of entries in this hashmap. */
-	void (*get_no_entries)(CLHM *map, int *entries);
+	void (*get_hashmap_size)(CLHM *map, unsigned int *size);
 
-	/* Private data of the hashmap. Do not touch. */
+	/**
+	 * Return the number of entries (data) in the given hashmap.
+	 * @param CLHM *map The hashmap itself.
+	 * @param unsigned int *size A pointer to store the number of entries in.
+	 */
+
+	void (*get_no_entries)(CLHM *map, unsigned int *entries);
+
+	/**
+	 * Private data of the hashmap. This should not be touched.
+	 */
+
 	void* priv;
 
 } CLHM;
-
-/* Init a hashmap with size n */
-CLHM *clhm_init(int n);
-
-/* Destroy a hashmap. */
-void clhm_destroy(CLHM *map);
 
 #endif
