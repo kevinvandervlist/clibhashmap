@@ -1,6 +1,5 @@
 /**
- * Check if duplicates can be inserted.
- * non-inserted stuff is NULL
+ * Check if items that aren't inserted result in NULL.
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,33 +29,24 @@ int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
 	hashmap = clhm_init(15);
-	unsigned int entries = 0;
 
 	// Make up some data.
 	char *one = "one";
-	int one_int = 1;
 
 	char *two = "two";
-	int two_int = 2;
 
 	char *three = "three";
-	char *string = "STRING";
 
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->put(hashmap, two, (void *)&two_int);
+	// Retrieving items : ints
+	void *iptr = hashmap->get_key_str(hashmap, one);
+	assert(iptr == NULL);
 
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 2);
+	iptr = hashmap->get_key_str(hashmap, two);
+	assert(iptr == NULL);
 
-	// trying to dup
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 2);
-
-	// But new entries do work.
-	hashmap->put(hashmap, three, (void *)string);
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 3);
+	// Retrieving items : string
+	void *sptr = hashmap->get_key_str(hashmap, three);
+	assert(sptr == NULL);
 
 	clhm_destroy(hashmap);
 	return 0;

@@ -27,6 +27,9 @@
 
 CLHM_ITR *clhm_get_new_iterator(char *key, void *value) {
 	CLHM_ITR *itr = malloc(sizeof(CLHM_ITR));
+	if(itr == NULL) {
+		return NULL;
+	}
 	itr->next = clhm_iterator_next;
 
 	itr->key = key;

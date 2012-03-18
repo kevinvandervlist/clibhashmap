@@ -1,5 +1,5 @@
 /**
- * Check if map still works with hash collisions
+ * A test to determine if the number of entries is correct.
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,12 @@
 int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
-	hashmap = clhm_init(1);
+	unsigned int entries = 0;
+
+	hashmap = clhm_init(15);
+
+	hashmap->get_no_entries(hashmap, &entries);
+	assert(entries == 0);
 
 	// Make up some data.
 	char *one = "one";
@@ -40,27 +45,28 @@ int main() {
 	char *three = "three";
 	char *string = "STRING";
 
-	char *n_str = "BLA";
+	// Store some data.
+	hashmap->put_str(hashmap, one, (void *)&one_int);
+	hashmap->put_str(hashmap, two, (void *)&two_int);
+	hashmap->put_str(hashmap, three, (void *)string);
 
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->put(hashmap, two, (void *)&two_int);
-	hashmap->put(hashmap, three, (void *)string);
+
+	hashmap->get_no_entries(hashmap, &entries);
+	assert(entries == 3);
 
 	// Retrieving items : ints
-	void *iptr = hashmap->get_key(hashmap, one);
-	assert(*(int *)iptr == one_int);
+	hashmap->remove_key_str(hashmap, one);
+	hashmap->get_no_entries(hashmap, &entries);
+	assert(entries == 2);
 
-	iptr = hashmap->get_key(hashmap, two);
-	assert(*(int *)iptr != one_int);
-	assert(*(int *)iptr == two_int);
+	hashmap->remove_key_str(hashmap, two);
+	hashmap->get_no_entries(hashmap, &entries);
+	assert(entries == 1);
 
 	// Retrieving items : string
-	void *sptr = hashmap->get_key(hashmap, three);
-	assert(strcmp((char*)sptr, string) == 0);
-
-	// Retrieving non-existing key
-	sptr = hashmap->get_key(hashmap, n_str);
-	assert(sptr == NULL);
+	hashmap->remove_key_str(hashmap, three);
+	hashmap->get_no_entries(hashmap, &entries);
+	assert(entries == 0);
 
 	clhm_destroy(hashmap);
 	return 0;

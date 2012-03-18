@@ -25,12 +25,16 @@
 
 #include "include/clibhashmap_bucket.h"
 
-HASHDATA *clhm_init_private_data(int hashsize) {
+HASHDATA *clhm_init_private_data(unsigned int hashsize) {
 	HASHDATA *hd = NULL;
+	unsigned int i = 0;
+
 	/* Allocate enough memory for HASHDATA + (hashsize * bucketsize) */
 	hd = malloc(sizeof(*hd) + (hashsize * sizeof(*hd->bucket_list)));
-	int i;
-	
+	if(hd == NULL) {
+		return NULL;
+	}
+
 	hd->size = hashsize;
 	hd->entries = 0;
 

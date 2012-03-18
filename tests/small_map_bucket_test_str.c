@@ -1,6 +1,5 @@
 /**
- * Check if items that are inserted can be found, and 
- * non-inserted stuff is NULL
+ * Check if map still works with hash collisions
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +28,7 @@
 int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
-	hashmap = clhm_init(15);
+	hashmap = clhm_init(1);
 
 	// Make up some data.
 	char *one = "one";
@@ -43,24 +42,24 @@ int main() {
 
 	char *n_str = "BLA";
 
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->put(hashmap, two, (void *)&two_int);
-	hashmap->put(hashmap, three, (void *)string);
+	hashmap->put_str(hashmap, one, (void *)&one_int);
+	hashmap->put_str(hashmap, two, (void *)&two_int);
+	hashmap->put_str(hashmap, three, (void *)string);
 
 	// Retrieving items : ints
-	void *iptr = hashmap->get_key(hashmap, one);
+	void *iptr = hashmap->get_key_str(hashmap, one);
 	assert(*(int *)iptr == one_int);
 
-	iptr = hashmap->get_key(hashmap, two);
+	iptr = hashmap->get_key_str(hashmap, two);
 	assert(*(int *)iptr != one_int);
 	assert(*(int *)iptr == two_int);
 
 	// Retrieving items : string
-	void *sptr = hashmap->get_key(hashmap, three);
+	void *sptr = hashmap->get_key_str(hashmap, three);
 	assert(strcmp((char*)sptr, string) == 0);
 
 	// Retrieving non-existing key
-	sptr = hashmap->get_key(hashmap, n_str);
+	sptr = hashmap->get_key_str(hashmap, n_str);
 	assert(sptr == NULL);
 
 	clhm_destroy(hashmap);

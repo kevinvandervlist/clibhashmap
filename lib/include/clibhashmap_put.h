@@ -23,6 +23,7 @@
 
 #include <clibhashmap.h>
 
-void clhm_put(CLHM *map, char *key, void *ptr);
+void clhm_put_str(CLHM *map, char *key, void *ptr);
+void clhm_put_int(CLHM *map, int *key, void *ptr);
 
 #endif

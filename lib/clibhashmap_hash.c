@@ -22,6 +22,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* https://en.wikipedia.org/wiki/Jenkins_hash_function */
 int jenkins_one_at_a_time(char *key, size_t len) {
@@ -42,5 +43,5 @@ int jenkins_one_at_a_time(char *key, size_t len) {
  */
 
 int clibhashmap_hash(char *key, int len) {
-	return jenkins_one_at_a_time(key, 32) & (len - 1);
+	return jenkins_one_at_a_time(key, strlen(key)) & (len - 1);
 }

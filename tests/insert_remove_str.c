@@ -1,5 +1,5 @@
 /**
- * A test to insert items in the hashmap, and check if they can be retrieved.
+ * A test to insert items in the hashmap, and check if they can be removed.
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,20 +41,26 @@ int main() {
 	char *string = "STRING";
 
 	// Store some data.
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->put(hashmap, two, (void *)&two_int);
-	hashmap->put(hashmap, three, (void *)string);
+	hashmap->put_str(hashmap, one, (void *)&one_int);
+	hashmap->put_str(hashmap, two, (void *)&two_int);
+	hashmap->put_str(hashmap, three, (void *)string);
 
 	// Retrieving items : ints
-	void *iptr = hashmap->get_key(hashmap, one);
+	void *iptr = hashmap->remove_key_str(hashmap, one);
 	assert(*(int *)iptr == one_int);
+	iptr = hashmap->remove_key_str(hashmap, one);
+	assert(iptr == NULL);
 
-	iptr = hashmap->get_key(hashmap, two);
+	iptr = hashmap->remove_key_str(hashmap, two);
 	assert(*(int *)iptr == two_int);
+	iptr = hashmap->remove_key_str(hashmap, two);
+	assert(iptr == NULL);
 
 	// Retrieving items : string
-	void *sptr = hashmap->get_key(hashmap, three);
+	void *sptr = hashmap->remove_key_str(hashmap, three);
 	assert(strcmp((char*)sptr, string) == 0);
+	sptr = hashmap->remove_key_str(hashmap, three);
+	assert(sptr == NULL);
 
 	clhm_destroy(hashmap);
 	return 0;

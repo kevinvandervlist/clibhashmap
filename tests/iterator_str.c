@@ -1,5 +1,5 @@
 /**
- * A minimal hashmap example.
+ * Loop over the hashmap with an iterator.
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,15 +18,17 @@
  * Kevin van der Vlist - kevin@kevinvandervlist.nl
  */
 
-#include <stdlib.h>
+#include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <clibhashmap.h>
 
 int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
-	hashmap = clhm_init(12);
+	hashmap = clhm_init(15);
 
 	// Make up some data.
 	char *one = "one";
@@ -36,30 +38,23 @@ int main() {
 	int two_int = 2;
 
 	char *three = "three";
-	char *string = "STRING";
+	int three_int = 3;
 
-	char *four = "this_doesn't_exist";
-
-	// Store some data.
 	hashmap->put_str(hashmap, one, (void *)&one_int);
 	hashmap->put_str(hashmap, two, (void *)&two_int);
-	hashmap->put_str(hashmap, three, (void *)string);
+	hashmap->put_str(hashmap, three, (void *)&three_int);
 
-	// Retrieving an item.
-	// Do not forget to cast pointer to correct value.
-	void *iptr = hashmap->get_key_str(hashmap, one);
-	printf("iptr: %d\n", *(int *)iptr);
+	CLHM_ITR *itr = hashmap->get_iterator(hashmap);
 
-	void *sptr = hashmap->get_key_str(hashmap, three);
-	printf("sptr: %s\n", (char *)sptr);
-
-	void *nptr = hashmap->get_key_str(hashmap, four);
-
-	if(nptr == NULL) {
-		printf("nptr: NULL: not found\n");
-	} else {
-		// nptr == NULL when no entry is found.
-		printf("nptr: This can't be reached.\n");
+	while(itr != NULL) {
+		if(strcmp(itr->key, one) == 0) {
+			assert(*(int *)itr->value == one_int);
+		} else	if(strcmp(itr->key, two) == 0) {
+			assert(*(int *)itr->value == two_int);
+		} else	if(strcmp(itr->key, three) == 0) {
+			assert(*(int *)itr->value == three_int);
+		}
+		itr = itr->next(itr);
 	}
 
 	clhm_destroy(hashmap);

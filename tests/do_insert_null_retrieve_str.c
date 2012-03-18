@@ -1,5 +1,6 @@
 /**
- * Loop over the hashmap with an iterator.
+ * Check if items that are inserted can be found, and 
+ * non-inserted stuff is NULL
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,24 +39,29 @@ int main() {
 	int two_int = 2;
 
 	char *three = "three";
-	int three_int = 3;
+	char *string = "STRING";
 
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->put(hashmap, two, (void *)&two_int);
-	hashmap->put(hashmap, three, (void *)&three_int);
+	char *n_str = "BLA";
 
-	CLHM_ITR *itr = hashmap->get_iterator(hashmap);
+	hashmap->put_str(hashmap, one, (void *)&one_int);
+	hashmap->put_str(hashmap, two, (void *)&two_int);
+	hashmap->put_str(hashmap, three, (void *)string);
 
-	while(itr != NULL) {
-		if(strcmp(itr->key, one) == 0) {
-			assert(*(int *)itr->value == one_int);
-		} else	if(strcmp(itr->key, two) == 0) {
-			assert(*(int *)itr->value == two_int);
-		} else	if(strcmp(itr->key, three) == 0) {
-			assert(*(int *)itr->value == three_int);
-		}
-		itr = itr->next(itr);
-	}
+	// Retrieving items : ints
+	void *iptr = hashmap->get_key_str(hashmap, one);
+	assert(*(int *)iptr == one_int);
+
+	iptr = hashmap->get_key_str(hashmap, two);
+	assert(*(int *)iptr != one_int);
+	assert(*(int *)iptr == two_int);
+
+	// Retrieving items : string
+	void *sptr = hashmap->get_key_str(hashmap, three);
+	assert(strcmp((char*)sptr, string) == 0);
+
+	// Retrieving non-existing key
+	sptr = hashmap->get_key_str(hashmap, n_str);
+	assert(sptr == NULL);
 
 	clhm_destroy(hashmap);
 	return 0;

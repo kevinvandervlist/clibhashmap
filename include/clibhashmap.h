@@ -54,8 +54,8 @@
  * char *two = "two";
  * int two_int = 2;
  *
- * hashmap->put(hashmap, one, (void *)&one_int);
- * hashmap->put(hashmap, two, (void *)&two_int);
+ * hashmap->put_str(hashmap, one, (void *)&one_int);
+ * hashmap->put_str(hashmap, two, (void *)&two_int);
  * 
  * void *iptr = hashmap->get_key(hashmap, one);
  * printf("One: %d\n", *(int *)iptr);
@@ -119,7 +119,18 @@ typedef struct _clhm_hashmap {
 	 * @param void *ptr A pointer to an object to store.
 	 */
 
-	void (*put)(CLHM *map, char *key, void *ptr);
+	void (*put_str)(CLHM *map, char *key, void *ptr);
+
+	/**
+	 * To 'put', or insert a new item (key,value) in the hashmap, this function
+	 * needs to be called. 
+	 * The key value will be used to create a hash from.
+	 * @param CLHM *map The hashmap itself.
+	 * @param int *key The key of the item to store.
+	 * @param void *ptr A pointer to an object to store.
+	 */
+
+	void (*put_int)(CLHM *map, int *key, void *ptr);
 
 	/**
 	 * Retrieve an item from the hashmap, locating it via it's key.
@@ -129,7 +140,17 @@ typedef struct _clhm_hashmap {
 	 * for issuing a correct cast.
 	 */
 
-	void* (*get_key)(CLHM *map, char* key);
+	void* (*get_key_str)(CLHM *map, char* key);
+
+	/**
+	 * Retrieve an item from the hashmap, locating it via it's key.
+	 * @param CLHM *map The hashmap itself.
+	 * @param int *key The key of the item to find.
+	 * @return void * A pointer to the stored value. Callee is responsible
+	 * for issuing a correct cast.
+	 */
+
+	void* (*get_key_int)(CLHM *map, int* key);
 
 	/**
 	 * The same as get_key(), but also deletes the entry from the hashmap.
@@ -139,7 +160,17 @@ typedef struct _clhm_hashmap {
 	 * for issuing a correct cast.
 	 */
 
-	void* (*remove_key)(CLHM *map, char* key);
+	void* (*remove_key_str)(CLHM *map, char* key);
+
+	/**
+	 * The same as get_key(), but also deletes the entry from the hashmap.
+	 * @param CLHM *map The hashmap itself.
+	 * @param int *key The key of the item to find.
+	 * @return void * A pointer to the stored value. Callee is responsible
+	 * for issuing a correct cast.
+	 */
+
+	void* (*remove_key_int)(CLHM *map, int* key);
 
 	/**
 	 * Return the size (in buckets) of the given hashmap.

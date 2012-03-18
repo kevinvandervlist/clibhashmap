@@ -88,7 +88,7 @@ BUCKET *clhm_get_bucket_from_key(CLHM *map, char *key, int remove) {
  * @param char *key The key to do the lookup with.
  */
 
-void *clhm_get_key(CLHM *map, char *key) {
+void *clhm_get_key_str(CLHM *map, char *key) {
 	BUCKET *b = clhm_get_bucket_from_key(map, key, 0);
 	if(b != NULL) {
 		return b->content;
@@ -102,7 +102,7 @@ void *clhm_get_key(CLHM *map, char *key) {
  * @param char *key The key to do the lookup with.
  */
 
-void *clhm_remove_key(CLHM *map, char *key) {
+void *clhm_remove_key_str(CLHM *map, char *key) {
 	BUCKET *b = clhm_get_bucket_from_key(map, key, 1);
 	if(b != NULL) {
 		void *ret = b->content;
@@ -114,4 +114,42 @@ void *clhm_remove_key(CLHM *map, char *key) {
 	}
 
 	return NULL;
+}
+
+
+/**
+ * Return an item from the hashmap.
+ * @param CLHM *map The hashmap to use.
+ * @param int *key The key to do the lookup with.
+ */
+
+void *clhm_get_key_int(CLHM *map, int *ikey) {
+	char *ckey = malloc(sizeof(char) * 21);
+	if(ckey == NULL) {
+		return NULL;
+	}
+
+	sprintf(ckey, "%d", *ikey);
+	void *ret = clhm_get_key_str(map, ckey);
+	free(ckey);
+
+	return ret;
+}
+
+/**
+ * Return an item from the hashmap, and delete it when found.
+ * @param CLHM *map The hashmap to use.
+ * @param int *key The key to do the lookup with.
+ */
+
+void *clhm_remove_key_int(CLHM *map, int *ikey) {
+	char *ckey = malloc(sizeof(char) * 21);
+	if(ckey == NULL) {
+		return NULL;
+	}
+	sprintf(ckey, "%d", *ikey);
+	void *ret = clhm_remove_key_str(map, ckey);
+	free(ckey);
+
+	return ret;
 }

@@ -23,7 +23,11 @@
 
 #include <clibhashmap.h>
 
-void *clhm_get_key(CLHM *map, char *key);
-void *clhm_remove_key(CLHM *map, char *key);
+void *clhm_get_key_int(CLHM *map, int *key);
+void *clhm_remove_key_int(CLHM *map, int *key);
+
+void *clhm_get_key_str(CLHM *map, char *key);
+void *clhm_remove_key_str(CLHM *map, char *key);
+
 
 #endif

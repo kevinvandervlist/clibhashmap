@@ -21,10 +21,31 @@
 #include "include/clibhashmap_put.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "include/clibhashmap_bucket.h"
 #include "include/clibhashmap_data.h"
 #include "include/clibhashmap_hash.h"
+
+/**
+ * Insert an item into the hashmap. 
+ * @param CLHM *map The hashmap to use.
+ * @param int *key The key to use for the hashmap.
+ * @param void *ptr Pointer to the data to store.
+ */
+
+void clhm_put_int(CLHM *map, int *ikey, void *ptr) {
+	// 2^64 == 18446744073709551616 -> strlen(): 20
+	char *ckey = malloc(sizeof(char) * 21);
+	if(ckey == NULL) {
+		return;
+	}
+
+	sprintf(ckey, "%d", *ikey);
+	clhm_put_str(map, ckey, ptr);
+
+	free(ckey);
+}
 
 /**
  * Insert an item into the hashmap.
@@ -33,13 +54,13 @@
  * @param void *ptr Pointer to the data to store.
  */
 
-void clhm_put(CLHM *map, char *key, void *ptr) {
+void clhm_put_str(CLHM *map, char *key, void *ptr) {
 	HASHDATA *hd = (HASHDATA *)map->priv;
 
 	int hash = clibhashmap_hash(key, hd->size);
 
 	// is the key allready in here? If so, do not insert (no dups).
-	void *existing_ptr = map->get_key(map, key);
+	void *existing_ptr = map->get_key_str(map, key);
 	if(existing_ptr != NULL) {
 		return;
 	}

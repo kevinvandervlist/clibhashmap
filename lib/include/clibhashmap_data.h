@@ -31,7 +31,7 @@ typedef struct _hashdata {
 } HASHDATA;
 
 BUCKET *clhm_get_new_bucket(char *key, void *ptr);
-HASHDATA *clhm_init_private_data(int hashsize);
+HASHDATA *clhm_init_private_data(unsigned int hashsize);
 void clhm_free_bucket(BUCKET *b);
 void clhm_get_hashmap_size(CLHM *map, unsigned int *size);
 void clhm_get_no_entries(CLHM *map, unsigned int *entries);

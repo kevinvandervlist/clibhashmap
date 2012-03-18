@@ -31,16 +31,23 @@
 
 CLHM *clhm_init(unsigned int size) {
 	CLHM *ret = malloc(sizeof(CLHM));
+	HASHDATA *hd = clhm_init_private_data(size);
+
+	if(ret == NULL || hd == NULL) {
+		return NULL;
+	}
 
 	// Attach all the function pointers in the object-like struct.
-	ret->put = clhm_put;
-	ret->get_key = clhm_get_key;
-	ret->remove_key = clhm_remove_key;
+	ret->put_str = clhm_put_str;
+	ret->put_int = clhm_put_int;
+	ret->get_key_str = clhm_get_key_str;
+	ret->get_key_int = clhm_get_key_int;
+	ret->remove_key_str = clhm_remove_key_str;
+	ret->remove_key_int = clhm_remove_key_int;
 	ret->get_hashmap_size = clhm_get_hashmap_size;
 	ret->get_no_entries = clhm_get_no_entries;
 	ret->get_iterator = clhm_get_iterator;
 
-	HASHDATA *hd = clhm_init_private_data(size);
 	ret->priv = hd;
 
 	return ret;

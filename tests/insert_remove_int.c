@@ -1,5 +1,5 @@
 /**
- * A test to determine if the number of entries is correct.
+ * A test to insert items in the hashmap, and check if they can be removed.
  * Copyright (C) 2012 Kevin van der Vlist
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,45 +28,41 @@
 int main() {
 	// Prepare the hashmap.
 	CLHM *hashmap = NULL;
-	unsigned int entries = 0;
-
 	hashmap = clhm_init(15);
 
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 0);
-
 	// Make up some data.
-	char *one = "one";
-	int one_int = 1;
+	int one = 1;
+	char *a = "First string";
 
-	char *two = "two";
-	int two_int = 2;
+	int two = 2;
+	char *b = "Second string";
 
-	char *three = "three";
-	char *string = "STRING";
+	int three = 3;
+	char *c = "Third string";
+
 
 	// Store some data.
-	hashmap->put(hashmap, one, (void *)&one_int);
-	hashmap->put(hashmap, two, (void *)&two_int);
-	hashmap->put(hashmap, three, (void *)string);
-
-
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 3);
+	hashmap->put_int(hashmap, &one, (void *)a);
+	hashmap->put_int(hashmap, &two, (void *)b);
+	hashmap->put_int(hashmap, &three, (void *)c);
 
 	// Retrieving items : ints
-	hashmap->remove_key(hashmap, one);
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 2);
+	void *sptr = hashmap->remove_key_int(hashmap, &one);
+	assert(strcmp((char*)sptr, a) == 0);
+	sptr = hashmap->remove_key_int(hashmap, &one);
+	assert(sptr == NULL);
 
-	hashmap->remove_key(hashmap, two);
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 1);
+	sptr = hashmap->remove_key_int(hashmap, &two);
+	assert(strcmp((char*)sptr, b) == 0);
+	sptr = hashmap->remove_key_int(hashmap, &two);
+	assert(sptr == NULL);
 
-	// Retrieving items : string
-	hashmap->remove_key(hashmap, three);
-	hashmap->get_no_entries(hashmap, &entries);
-	assert(entries == 0);
+	sptr = hashmap->remove_key_int(hashmap, &three);
+	assert(strcmp((char*)sptr, c) == 0);
+	sptr = hashmap->remove_key_int(hashmap, &three);
+	assert(sptr == NULL);
+
+
 
 	clhm_destroy(hashmap);
 	return 0;
